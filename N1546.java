@@ -1,6 +1,5 @@
 package BOJ;
 
-import java.nio.channels.InterruptedByTimeoutException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
