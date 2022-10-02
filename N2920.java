@@ -20,13 +20,13 @@ public class N2920 {
             ArrayList<Integer> sort = (ArrayList<Integer>) origin.clone();
             
             Collections.sort(sort);
-            if(origin.equals(sort)) {
+            if(origin.equals(sort)) {  // 오름차순
                 System.out.println("ascending");
-            } else {
+            } else {  // 이 아니면
                 Collections.sort(sort, Collections.reverseOrder());
-                if(origin.equals(sort)) {
+                if(origin.equals(sort)) {  // 내림차순 검색
                     System.out.println("descending");
-                } else {
+                } else {  // 마저도 아니면 mix
                     System.out.println("mixed");
                 }
             }
