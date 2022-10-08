@@ -1,6 +1,5 @@
 package BOJ;
 
-import java.util.LinkedHashMap;
 import java.util.Scanner;
 
 public class N10950 {
@@ -8,16 +7,18 @@ public class N10950 {
         Scanner input = new Scanner(System.in);
         try {
             int num = input.nextInt();
+            int size = num * 2;
     
             int i;
-            LinkedHashMap<Integer, Integer> list = new LinkedHashMap<>();
-            for(i = 0; i < num; i++) {
-                list.put(input.nextInt(), input.nextInt());
+            int[] list = new int[size];
+            for(i = 0; i < size; i++) {
+                list[i] = input.nextInt();
             }   
     
-            for(int key : list.keySet()) {
-                System.out.println(key + list.get(key));
+            for(i = 0; i < num; i++) {
+                System.out.println(list[i * 2] + list[i * 2 + 1]);
             }
+
         } finally {
             input.close();
         }
