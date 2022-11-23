@@ -17,87 +17,62 @@ package BOJ;
  * + + + + - - + + - + + - - - - -
  */
 
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class N1874 {
-    private static int top = -1;
-    
-    private static ArrayList<Integer> stack = new ArrayList<>();  // 스택
-    private static ArrayList<Integer> list = new ArrayList<>();  // 후에 나열할 배열
+    public static void main(String[] agrs) throws IOException {
+        BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder build = new StringBuilder();
 
-    private static ArrayList<Integer> sorted;
-
-    public static void main(String[] agrs) {
-        Scanner input = new Scanner(System.in);
-
-        long limit = input.nextInt();
+        int num = Integer.parseInt(read.readLine());
 
         ArrayList<Integer> numList = new ArrayList<>();  // 받은 수열
-        sorted = (ArrayList<Integer>) numList.clone();  // 받은 수열 오름차순 정렬
+
+        int[] stack = new int[num];
+        int top = -1;
 
         int i;
-        for(i = 0; i < limit; i++) {
-            numList.add(input.nextInt());
+        for(i = 0; i < num; i++) {
+            numList.add(Integer.parseInt(read.readLine()));
         }
 
-        Collections.sort(sorted);  // 오름차순으로 입력해야 하기 때문에 정렬
+        ArrayList<Integer> finalList = new ArrayList<>();
         
+        int start = 0;
         while(true) {
-            int j = 0;
-            i = 0;
-            while(true) {
-                // 자기보다 작은 숫자들을 무조건 먼저 넣어주어야 함
-                if(numList.get(i) >= sorted.get(j)) {
-                    push(sorted.get(j), limit);
-                    j++;
-                } else break;
-            }
-    
-            i = 0;
-            while(true) {
-                if(stack.get(top) == numList.get(i)) {
-                    pop();
-                } else break;
-            }
-    
-            if(sorted.size() == 0) {
-                if(stack.get(top) > numList.get(list.size() - 1)) System.out.println("NO");
-            }
-    
-        }        
-        
-
-    }
-
-    public static void push(int value, long limit) {
-        if(!isFull(limit)) {
-            top++;
-            stack.add(top, value);
+            if(numList.size() == 0) break;
             
-            sorted.remove(value);
+            if(numList.get(0) >= start) {
+                for(i = start + 1; i <= numList.get(0); i++) {
+                    top++;
+                    stack[top] = i;
 
-            System.out.println("+ " + stack.get(0));
-        } else System.out.println("Stack is full!");
-    }
+                    build.append("+\n");
+                } 
+                
+                start = numList.get(0);
+            }
+             
+            // 현재 top에 있는 값이 list에 넣어야 할 값보다 크면 더 이상 과정을 진행할 수 없음
+            if(stack[top] > numList.get(0)) break;
 
-    public static void pop() {
-        if(!isEmpty()) {
-            list.add(stack.get(top));  // 제일 마지막에 넣은 애들 빼줌 (선입후출)
-            top--; 
+            if(stack[top] == numList.get(0)) {  // 현재 top에 있는 숫자가 넣어야 할 값인 경우
+                finalList.add(stack[top]);
+                
+                top--;
+                numList.remove(0);
 
-            System.out.println("- " + stack);
-        } else System.out.println("Stack is empty!");
-    }
+                build.append("-\n");
+            }
+        }
 
-    public static boolean isEmpty() {
-        if(stack.size() == 0) return true;
-        else return false;
-    }
-
-    public static boolean isFull(long limit) {
-        if(stack.size() == limit - 1) return true;
-        else return false;
+        if(numList.size() == 0) {
+            System.out.println(build);
+        } else {
+            System.out.println("NO");
+        }
     }
 }
