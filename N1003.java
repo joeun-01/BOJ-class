@@ -35,36 +35,41 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 
 public class N1003 {
-    static int zero;
-    static int one;
     public static void main(String[] args) throws IOException {
         BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder build = new StringBuilder();
 
         int num = Integer.parseInt(read.readLine());
 
-        int i;
+        int i, j;
         for(i = 0; i < num; i++) {
-            zero = 0;
-            one = 0;
+            int n = Integer.parseInt(read.readLine());
 
-            fibonacci(Integer.parseInt(read.readLine()));
+            if(n == 0) {
+                build.append("1 0\n");
+            } else if(n == 1) {
+                build.append("0 1\n");
+            } else {
+                int[][] fibonacci = new int[n + 1][3];
 
-            build.append(zero + " " + one + "\n");
+                fibonacci[0][0] = 0;
+                fibonacci[0][1] = 1;
+                fibonacci[0][2] = 0;
+
+                fibonacci[1][0] = 1;
+                fibonacci[1][1] = 0;
+                fibonacci[1][2] = 1;
+
+                for(j = 2; j <= n; j++) {    
+                    fibonacci[j][0] = fibonacci[j - 1][0] + fibonacci[j - 2][0];
+                    fibonacci[j][1] = fibonacci[j - 1][1] + fibonacci[j - 2][1];
+                    fibonacci[j][2] = fibonacci[j - 1][2] + fibonacci[j - 2][2];
+                }
+    
+                build.append(fibonacci[n][1] + " " + fibonacci[n][2] + "\n");
+            }
         }
 
         System.out.println(build);
-    }
-
-    public static int fibonacci(int n) {
-        if(n == 0) {
-            zero++;
-            return 0;
-        } else if(n == 1) {
-            one++;
-            return 1;
-        } else {
-            return fibonacci(n - 1) + fibonacci(n - 2);
-        }
     }
 }
