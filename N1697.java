@@ -27,7 +27,6 @@ import java.util.LinkedList;
 
 public class N1697 {
     static int length;
-    static int second[][];
     public static void main(String[] args) throws IOException {
         BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder build = new StringBuilder();
@@ -39,21 +38,6 @@ public class N1697 {
         if(me < sister) {
             length = Math.max(me, sister) * 2 + 1;
 
-            second = new int[length][length];
-    
-            for(int i = Math.min(me, sister); i <= Math.max(me, sister); i++) {
-                second[i][i + 1] = 1;
-                second[i + 1][i] = 1;
-    
-                second[i][i * 2] = 1;
-                second[i * 2][i] = 1;
-    
-                if(i != 0) {
-                    second[i][i - 1] = 1;
-                    second[i - 1][i] = 1;
-                }
-            }
-    
             build.append(BFS(me, sister));
         } else {
             build.append(me - sister);
@@ -75,25 +59,33 @@ public class N1697 {
         while(!queue.isEmpty()) {
             int node = queue.poll();
 
+            System.out.println(node);
+
             if(node != 0 && !visit[node - 1]) {
                 queue.add(node - 1);
 
                 visit[node - 1] = true;
                 depth[node - 1] = depth[node] + 1;
+
+                if(node - 1 == end) return depth[end];
             }
 
-            if(!visit[node + 1]) {
+            if(node + 1 < length && !visit[node + 1]) {
                 queue.add(node + 1);
 
                 visit[node + 1] = true;
                 depth[node + 1] = depth[node] + 1;
+
+                if(node + 1 == end) return depth[end];
             }
             
-            if(!visit[node * 2]) {
+            if(node < end && !visit[node * 2]) {
                 queue.add(node * 2);
 
                 visit[node * 2] = true;
                 depth[node * 2] = depth[node] + 1;
+
+                if(node * 2 == end) return depth[end];
             }
         }
 
