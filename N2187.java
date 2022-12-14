@@ -60,33 +60,67 @@ public class N2187 {
             }
         }
 
-        for(int i = 0; i < row; i++) {
-            for(int j = 0; j < column; j++) {
-                System.out.print(table[i][j]);
-            }
+        System.out.println(BFS());
 
-            System.out.println();
-        }        
+        // for(int i = 0; i < row; i++) {
+        //     for(int j = 0; j < column; j++) {
+        //         System.out.print(table[i][j]);
+        //     }
+
+        //     System.out.println();
+        // }        
     }
 
-    public static void BFS(int rs, int re, int cs, int ce) {
+    public static int BFS() {
         Queue<String> queue = new LinkedList<>();
         boolean[][] visited = new boolean[row][column];
         int[][] depth = new int[row][column];
 
         queue.add(0 + " " + 0);
         visited[0][0] = true;
-        depth[0][0] = 0;
+        depth[0][0] = 1;
 
         while(!queue.isEmpty()) {
             StringTokenizer node = new StringTokenizer(queue.poll());
             
-            int row = Integer.parseInt(node.nextToken());
-            int column = Integer.parseInt(node.nextToken());
+            int nr = Integer.parseInt(node.nextToken());
+            int nc = Integer.parseInt(node.nextToken());
 
-            if(row > 0) {
-                
+            if(nr > 0) {  // 위
+                if(!visited[nr - 1][nc] && table[nr - 1][nc] == 1) {
+                    queue.add((nr - 1) + " " + nc);
+                    visited[nr - 1][nc] = true;
+                    depth[nr - 1][nc] = depth[nr][nc] + 1;
+                }
             }
+
+            if(nr < row - 1) {  // 아래
+                if(!visited[nr + 1][nc] && table[nr + 1][nc] == 1) {
+                    queue.add((nr + 1) + " " + nc);
+                    visited[nr + 1][nc] = true;
+                    depth[nr + 1][nc] = depth[nr][nc] + 1;
+                }
+            }
+
+            if(nc > 0) {  // 왼쪽
+                if(!visited[nr][nc - 1] && table[nr][nc - 1] == 1) {
+                    queue.add(nr + " " + (nc - 1));
+                    visited[nr][nc - 1] = true;
+                    depth[nr][nc - 1] = depth[nr][nc] + 1;
+                }
+            }
+
+            if(nc < column - 1) {  // 오른쪽
+                if(!visited[nr][nc + 1] && table[nr][nc + 1] == 1) {
+                    queue.add(nr + " " + (nc + 1));
+                    visited[nr][nc + 1] = true;
+                    depth[nr][nc + 1] = depth[nr][nc] + 1;
+                }
+            }
+
+            if(visited[row - 1][column - 1]) return depth[row - 1][column - 1];
         }
+
+        return 0;
     }
 }
