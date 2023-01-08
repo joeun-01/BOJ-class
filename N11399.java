@@ -32,7 +32,6 @@ package BOJ;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.StringTokenizer;
 
 import java.io.IOException;
