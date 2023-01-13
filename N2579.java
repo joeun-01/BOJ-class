@@ -49,16 +49,25 @@ public class N2579 {
         BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
 
         int num = Integer.parseInt(read.readLine());
-        stare = new int[num];
+        stare = new int[301];
 
-        for(int i = 0; i < num; i++) {
+        for(int i = 1; i <= num; i++) {
             stare[i] = Integer.parseInt(read.readLine());
         }
 
+        int[] dp = new int[301];
 
-    }
+        dp[1] = stare[1];
+        dp[2] = stare[1] + stare[2];
+        dp[3] = Math.max(stare[1], stare[2]) + stare[3];
 
-    public static void recursive(int count) {
+        for(int i = 4; i <= num; i++) {
+            int first = stare[i] + dp[i - 2];
+            int second = stare[i] + stare[i - 1] + dp[i - 3];
 
+            dp[i] = Math.max(first, second);
+        }
+
+        System.out.print(dp[num]);
     }
 }
