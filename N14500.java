@@ -40,7 +40,11 @@ import java.io.IOException;
 public class N14500 {
     static int row;
     static int column;
+
     static int[][] table;
+    static boolean[][] visited;
+
+    static int max = Integer.MIN_VALUE;
 
     public static void main(String[] args) throws IOException {
         BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
@@ -50,6 +54,7 @@ public class N14500 {
         column = Integer.parseInt(input.nextToken());
 
         table = new int[row][column];
+        visited = new boolean[row][column];
 
         for(int i = 0; i < row; i++) {
             StringTokenizer rowStr = new StringTokenizer(read.readLine());
@@ -58,114 +63,52 @@ public class N14500 {
             }
         }
 
-        int max = Integer.MIN_VALUE;
+        // DFS로 모든 모양을 만들 수 있음
+        // 어디로 가도 문제에서 원하는 모양들이 나옴
         for(int i = 0; i < row; i++) {
             for(int j = 0; j < column; j++) {
-                max = Math.max(max, first(i, j));
-                max = Math.max(max, second(i, j));
-                max = Math.max(max, third(i, j));
-                max = Math.max(max, fourth(i, j));
-                max = Math.max(max, fifth(i, j));
+                visited[i][j] = true;
+                DFS(i, j, table[i][j], 1);
+                visited[i][j] = false;
             }
         }
+
+        System.out.println(max);
     }
 
-    public static int first(int i, int j) {
-        int max = 0;
+	static void DFS(int r, int c, int sum, int count) {
+		if(count == 4) {  // 테트로미노 완성 시 합을 리턴
+			max = Math.max(max, sum);
+			return;
+		}
 
-        if(j + 3 < column) {
-            int count = table[i][j] + table[i][j + 1] + table[i][j + 2] + table[i][j + 3];
+        int[] dr = {-1, 1, 0, 0};  // 상하좌우
+        int[] dc = {0, 0, -1, 1};  // 상하좌우
 
-            max = Math.max(count, max);
-        }
+		for(int i = 0; i < 4; i++) {
+			int nr = r+ dr[i];
+			int nc = c + dc[i];
 
-        
-        if(i + 3 < row) {
-            int count = table[i][j] + table[i + 1][j] + table[i + 2][j] + table[i + 3][j];
+			// 범위 벗어나면 예외 처리
+			if(nr < 0 || nr >= row || nc < 0 || nc >= column) {
+				continue;
+			}
 
-            max = Math.max(count, max);
-        }
+			// 아직 방문하지 않은 곳이라면
+			if(!visited[nr][nc]) {
 
-        return max;
-    }
+				// 보라색(ㅗ) 테트로미노 만들기 위해 2번째 칸에서 탐색 한번 더 진행
+				if(count == 2) {
+					visited[nr][nc] = true;
+					DFS(r, c, sum + table[nr][nc], count + 1);
+					visited[nr][nc] = false;
+				}
 
-    public static int second(int i, int j) {
-        int max = 0;
-
-        if(i + 1 < row && j + 1 < column) {
-            int count = table[i][j] + table[i][j + 1] + table[i + 1][j] + table[i + 1][j + 1];
-
-            max = Math.max(max, count);
-        }
-
-        return max;
-    }
-
-    public static int third(int i, int j) {
-        int max = 0;
-
-        if(i + 2 < row && j + 1 < column) {
-            int count = table[i][j] + table[i + 1][j] + table[i + 2][j] + table[i + 2][j + 1];
-
-            max = Math.max(max, count);
-        }
-
-        if(i + 2 < row && j - 1 >= 0) {
-            int count = table[i][j] + table[i + 1][j] + table[i + 2][j] + table[i + 2][j - 1];
-
-            max = Math.max(max, count);
-        }
-
-        if(i + 2 < row && j + 1 < column) {
-            int count = table[i][j] + table[i][j + 1] + table[i + 1][j + 1] + table[i + 2][j + 1];
-
-            max = Math.max(max, count);
-        }
-
-        if(i + 2 < row && j - 1 < column) {
-            int count = table[i][j] + table[i + 1][j] + table[i + 2][j] + table[i][j + 1];
-            
-            max = Math.max(max, count);
-        }
-
-        if(i + 1 >= 0 && j + 2 < column) {
-            int count = table[i][j] + table[i][j + 1] + table[i][j + 2] + table[i - 1][j + 2];
-
-            max = Math.max(max, count);
-        }
-
-        if(i + 2 < row && j + 1 < column) {
-            int count = table[i][j] + table[i + 1][j] + table[i + 2][j] + table[i + 2][j + 1];
-
-            max = Math.max(max, count);
-        }
-
-        return max;
-    }
-
-    public static int fourth(int i, int j) {
-        int max = 0;
-
-        if(i + 1 < row && j + 1 < column) {
-            int count = table[i][j] + table[i][j + 1] + table[i + 1][j] + table[i + 1][j + 1];
-
-            max = Math.max(max, count);
-        }
-
-        return max;
-    }
-
-    public static int fifth(int i, int j) {
-        int max = 0;
-
-        if(i + 1 < row && j + 1 < column) {
-            int count = table[i][j] + table[i][j + 1] + table[i + 1][j] + table[i + 1][j + 1];
-
-            max = Math.max(max, count);
-        }
-
-        return max;
-    }
-
+				visited[nr][nc] = true;
+				DFS(nr, nc, sum + table[nr][nc], count + 1);
+				visited[nr][nc] = false;
+			}
+		}
+	}
 }
 
