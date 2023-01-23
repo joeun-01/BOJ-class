@@ -17,6 +17,69 @@ package BOJ;
 1 1 1
  */
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Stack;
+import java.util.StringTokenizer;
+import java.io.IOException;
+
 public class N11403 {
-    
+    static int node;
+    static int[][] graph;
+    static int[][] result;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder build = new StringBuilder();
+
+        node = Integer.parseInt(read.readLine());
+
+        graph = new int[node][node];
+        result = new int[node][node];
+
+        for(int i = 0; i < node; i++) {
+            StringTokenizer stoi = new StringTokenizer(read.readLine());
+            for(int j = 0; j < node; j++) {
+                graph[i][j] = Integer.parseInt(stoi.nextToken());
+            }
+        }
+
+        for(int i = 0; i < node; i++) {
+            for(int j = 0; j < node; j++) {
+                if(graph[i][j] == 1) {
+                    DFS(i, j);
+                    break;
+                }
+            }
+        }
+
+        for(int i = 0; i < node; i++) {
+            for(int j = 0; j < node; j++) {
+                build.append(result[i][j] + " ");
+            }
+            build.append("\n");
+        }
+
+        System.out.println(build);
+    }
+
+    public static void DFS(int i, int j) {
+        Stack<Integer> stack = new Stack<>();
+        boolean[][] visited = new boolean[node][node];
+
+        stack.push(i);
+
+        while(!stack.isEmpty()) {
+            int now = stack.pop();
+
+            for(int k = 0; k < node; k++) {
+                if(!visited[now][k] && graph[now][k] == 1) {
+                    stack.push(k);
+                    visited[now][k] = true;
+                    result[i][k] = 1;
+                }
+            }
+        }
+
+    }
 }
