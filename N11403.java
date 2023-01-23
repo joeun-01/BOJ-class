@@ -44,6 +44,7 @@ public class N11403 {
             }
         }
 
+        /* DFS로 풀기 */
         for(int i = 0; i < node; i++) {
             for(int j = 0; j < node; j++) {
                 if(graph[i][j] == 1) {
@@ -60,7 +61,39 @@ public class N11403 {
             build.append("\n");
         }
 
+        /* Floyd-Warshall로 풀기 */
+        floyd_warshall(); 
+
+        for(int i = 0; i < node; i++) {
+            for(int j = 0; j < node; j++) {
+                if(result[i][j] == 0) {
+                    build.append(0 + " ");
+                } else {
+                    build.append(1 + " ");
+                }
+            }
+            build.append("\n");
+        }
+
         System.out.println(build);
+    }
+
+    public static void floyd_warshall() {
+        result = graph.clone();
+
+        for(int cur = 0; cur < node; cur++) {
+            for(int i = 0; i < node; i++) {
+                for(int j = 0; j < node; j++) {
+                    if(result[i][cur] != 0 && result[cur][j] != 0) {
+                        if(result[i][j] == 0) {
+                            result[i][j] = result[i][cur] + result[cur][j];
+                        } else {
+                            result[i][j] = Math.min(result[i][j], result[i][cur] + result[cur][j]);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public static void DFS(int i, int j) {
