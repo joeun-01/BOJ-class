@@ -49,21 +49,113 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 import java.io.IOException;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class N16236 {
+    static int N;
+    static int[][] space;
     public static void main(String[] args) throws IOException {
         BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
 
-        int N = Integer.parseInt(read.readLine());
+        N = Integer.parseInt(read.readLine());
 
-        int[][] space = new int[N][N];
+        space = new int[N][N];
+
+        int sti = 0;
+        int stj = 0;
 
         for(int i = 0; i < N; i++) {
             StringTokenizer row = new StringTokenizer(read.readLine());
             for(int j = 0; j < N; j++) {
                 space[i][j] = Integer.parseInt(row.nextToken());
+
+                if(space[i][j] == 9) {
+                    sti = i;
+                    stj = j;
+                }
             }
         }
 
-        int shark = 2;
+        Queue<String> queue = new LinkedList<>();
+        queue.add(sti + " " + stj);
+        space[sti][stj] = 0;
+
+        int sec = 0;
+        int shark = 2, fish = -1;
+    
+        while(!queue.isEmpty()) {
+            StringTokenizer stoi = new StringTokenizer(queue.poll());
+
+            int row = Integer.parseInt(stoi.nextToken());
+            int col = Integer.parseInt(stoi.nextToken());
+
+            fish++;
+
+            if(fish == shark) {
+                shark++;
+                fish = 0;
+            }
+
+            StringTokenizer next = new StringTokenizer(BFS(row, col, shark));
+
+            int nextRow = Integer.parseInt(next.nextToken());
+            int nextCol = Integer.parseInt(next.nextToken());
+
+            if(row == nextRow && col == nextCol) break;
+            
+            queue.add(nextRow + " " + nextCol);
+            sec += Integer.parseInt(next.nextToken());
+        }
+
+        System.out.println(sec);
+        
+    }
+
+    public static String BFS(int str, int stc, int shark) {
+        Queue<String> queue = new LinkedList<>();
+
+        boolean[][] visited = new boolean[N][N];
+        int[][] path = new int[N][N];
+
+        visited[str][stc] = true;
+        queue.add(str + " " + stc);
+
+        int[] r = {-1, 0, 0, 1};
+        int[] c = {0, -1, 1, 0};
+
+        while(!queue.isEmpty()) {
+            StringTokenizer node = new StringTokenizer(queue.poll());
+            
+            int nr = Integer.parseInt(node.nextToken());
+            int nc = Integer.parseInt(node.nextToken());
+
+            for(int i = 0; i < 4; i++) {
+                int row = nr + r[i];
+                int col = nc + c[i];
+
+                if(row >= 0 && row < N && col >= 0 && col < N) {
+                    // 자기보다 크기가 작거나 같은 경우에만 지나갈 수 있음
+                    if(!visited[row][col] && space[row][col] <= shark) {
+                        // 길 +1
+                        visited[row][col] = true;
+                        path[row][col] = path[nr][nc] + 1;
+                        queue.add(row + " " + col);
+
+                        System.out.println("row : " + row + " col : " + col + " / " + space[row][col]);
+
+                        if(space[row][col] != 0 && space[row][col] < shark) {
+                            // 같은 경우에는 먹음
+                            space[row][col] = 0;
+                            return row + " " + col + " " + path[row][col];    
+                        }
+                    }
+
+                }
+            }
+
+        }
+
+        return str + " " + stc;
     }
 }
