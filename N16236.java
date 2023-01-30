@@ -44,118 +44,236 @@ N×N 크기의 공간에 물고기 M마리와 아기 상어 1마리가 있다.
 0
  */
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
-import java.io.IOException;
+ import java.io.BufferedReader;
+ import java.io.IOException;
+ import java.io.InputStreamReader;
+ import java.util.LinkedList;
+ import java.util.PriorityQueue;
+ import java.util.Queue;
+ import java.util.StringTokenizer;
+ 
+ public class N16236 {
+     static int N, ans, eatCnt;
+     static int sharkSize = 2;
+     static int[][] map;
+     static Queue<Point> q = new LinkedList<>();
+     final static int[] dy= {-1, 1, 0, 0};
+     final static int[] dx = {0, 0, -1, 1};
+     
+     public static void main(String[] args) throws IOException {
+         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+         StringTokenizer st;
+         
+         N = parse(br.readLine());
+         
+         map = new int[N][N];
+         for(int i=0; i<N; i++) {
+             st = new StringTokenizer(br.readLine());
+             for(int j=0; j<N; j++) {
+                 map[i][j] = parse(st.nextToken());
+                 if(map[i][j] == 9) {
+                     q.offer(new Point(i, j));
+                     map[i][j] = 0;
+                 }
+             }
+         }
+         
+         while(sharkFine());
+         System.out.println(ans);
+     }
+     
+     
+     private static boolean sharkFine() {
+         boolean[][] visited = new boolean[N][N];
+         PriorityQueue<Point> pq = new PriorityQueue<>();
+         
+         int dist = 0;
+         
+         while(!q.isEmpty()) {
+             int size = q.size();
+             for(int s=0; s<size; s++) {
+                 Point point = q.poll();
+                 
+                 for(int d=0; d<4; d++) {
+                     int y = point.y + dy[d];
+                     int x = point.x + dx[d];
+                     if(y>=0 && x>=0 && y<N && x<N && !visited[y][x]) {//범위체크
+                         if(sharkSize > map[y][x] && map[y][x] != 0) { // 아기상어가 더 크면
+                             pq.offer(new Point(y, x));
+                         }
+                         if(sharkSize >= map[y][x]) { // 아기상어가 지나갈 수 있다면 
+                             q.offer(new Point(y, x));
+                         }
+                         visited[y][x] = true;
+                     }
+                 }
+             }
+             
+             dist++;
+             
+             if(!pq.isEmpty()) {
+                 q = new LinkedList<>(); // 한마리라도 잡히면 초기화
+                 Point fish = pq.poll();
+                 map[fish.y][fish.x] = 0;
+                 q.offer(fish);
+                 pq = new PriorityQueue<>(); // 한 마리 뻇으니까 초기화
+                 ans+=dist; // 거리 누적
+                 
+                 if(sharkSize == ++eatCnt) {
+                     sharkSize++;
+                     eatCnt=0;
+                 }
+                 return true;
+             }
+             
+         }
+         
+         return false;
+     }
+ 
+ 
+     private static int parse(String str) {
+         return Integer.parseInt(str);
+     }
+ 
+     private static class Point implements Comparable<Point>{
+         int y, x;
+         Point(int y, int x){
+             this.y = y;
+             this.x = x;
+         }
+         @Override
+         public int compareTo(Point o) {
+             if(this.y == o.y) {
+                 return this.x-o.x;
+             }
+             return this.y-o.y;
+         }
+     }
+     
+ }
 
-import java.util.LinkedList;
-import java.util.Queue;
+// import java.io.BufferedReader;
+// import java.io.InputStreamReader;
+// import java.util.StringTokenizer;
+// import java.io.IOException;
 
-public class N16236 {
-    static int N;
-    static int[][] space;
-    public static void main(String[] args) throws IOException {
-        BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
+// import java.util.LinkedList;
+// import java.util.Queue;
 
-        N = Integer.parseInt(read.readLine());
+// public class N16236 {
+//     static int N;
+//     static int[][] space;
+//     public static void main(String[] args) throws IOException {
+//         BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
 
-        space = new int[N][N];
+//         N = Integer.parseInt(read.readLine());
 
-        int sti = 0;
-        int stj = 0;
+//         space = new int[N][N];
 
-        for(int i = 0; i < N; i++) {
-            StringTokenizer row = new StringTokenizer(read.readLine());
-            for(int j = 0; j < N; j++) {
-                space[i][j] = Integer.parseInt(row.nextToken());
+//         int sti = 0;
+//         int stj = 0;
 
-                if(space[i][j] == 9) {
-                    sti = i;
-                    stj = j;
-                }
-            }
-        }
+//         for(int i = 0; i < N; i++) {
+//             StringTokenizer row = new StringTokenizer(read.readLine());
+//             for(int j = 0; j < N; j++) {
+//                 space[i][j] = Integer.parseInt(row.nextToken());
 
-        Queue<String> queue = new LinkedList<>();
-        queue.add(sti + " " + stj);
-        space[sti][stj] = 0;
+//                 if(space[i][j] == 9) {
+//                     sti = i;
+//                     stj = j;
+//                 }
+//             }
+//         }
 
-        int sec = 0;
-        int shark = 2, fish = -1;
+//         Queue<String> queue = new LinkedList<>();
+//         queue.add(sti + " " + stj);
+
+//         int sec = 0;
+//         int shark = 2, fish = 0;
     
-        while(!queue.isEmpty()) {
-            StringTokenizer stoi = new StringTokenizer(queue.poll());
+//         while(!queue.isEmpty()) {
+//             StringTokenizer stoi = new StringTokenizer(queue.poll());
 
-            int row = Integer.parseInt(stoi.nextToken());
-            int col = Integer.parseInt(stoi.nextToken());
+//             int row = Integer.parseInt(stoi.nextToken());
+//             int col = Integer.parseInt(stoi.nextToken());
 
-            fish++;
+//             space[row][col] = 0;
 
-            if(fish == shark) {
-                shark++;
-                fish = 0;
-            }
+//             StringTokenizer next = new StringTokenizer(BFS(row, col, shark));
 
-            StringTokenizer next = new StringTokenizer(BFS(row, col, shark));
+//             int nextRow = Integer.parseInt(next.nextToken());
+//             int nextCol = Integer.parseInt(next.nextToken());
 
-            int nextRow = Integer.parseInt(next.nextToken());
-            int nextCol = Integer.parseInt(next.nextToken());
+//             if(row == nextRow && col == nextCol) break;
 
-            if(row == nextRow && col == nextCol) break;
+//             sec += Integer.parseInt(next.nextToken());
+
+//             fish++;
+
+//             if(fish == shark) {
+//                 shark++;
+//                 fish = 0;
+//             }
             
-            queue.add(nextRow + " " + nextCol);
-            sec += Integer.parseInt(next.nextToken());
-        }
+//             queue.add(nextRow + " " + nextCol);
+//         }
 
-        System.out.println(sec);
+//         System.out.println(sec);
         
-    }
+//     }
 
-    public static String BFS(int str, int stc, int shark) {
-        Queue<String> queue = new LinkedList<>();
+//     public static String BFS(int str, int stc, int shark) {
+//         Queue<String> queue = new LinkedList<>();
 
-        boolean[][] visited = new boolean[N][N];
-        int[][] path = new int[N][N];
+//         boolean[][] visited = new boolean[N][N];
+//         int[][] path = new int[N][N];
 
-        visited[str][stc] = true;
-        queue.add(str + " " + stc);
+//         visited[str][stc] = true;
+//         queue.add(str + " " + stc);
 
-        int[] r = {-1, 0, 0, 1};
-        int[] c = {0, -1, 1, 0};
+//         int[] r = {-1, 0, 0, 1};
+//         int[] c = {0, -1, 1, 0};
 
-        while(!queue.isEmpty()) {
-            StringTokenizer node = new StringTokenizer(queue.poll());
+//         int shortDist = 0;
+//         int tempRow = 0;
+//         int tempCol = 0;
+
+//         while(!queue.isEmpty()) {
+//             StringTokenizer node = new StringTokenizer(queue.poll());
             
-            int nr = Integer.parseInt(node.nextToken());
-            int nc = Integer.parseInt(node.nextToken());
+//             int nr = Integer.parseInt(node.nextToken());
+//             int nc = Integer.parseInt(node.nextToken());
 
-            for(int i = 0; i < 4; i++) {
-                int row = nr + r[i];
-                int col = nc + c[i];
+//             for(int i = 0; i < 4; i++) {
+//                 int row = nr + r[i];
+//                 int col = nc + c[i];
 
-                if(row >= 0 && row < N && col >= 0 && col < N) {
-                    // 자기보다 크기가 작거나 같은 경우에만 지나갈 수 있음
-                    if(!visited[row][col] && space[row][col] <= shark) {
-                        // 길 +1
-                        visited[row][col] = true;
-                        path[row][col] = path[nr][nc] + 1;
-                        queue.add(row + " " + col);
+//                 if(row >= 0 && row < N && col >= 0 && col < N) {
+//                     // 자기보다 크기가 작거나 같은 경우에만 지나갈 수 있음
+//                     if(!visited[row][col] && space[row][col] <= shark) {
+//                         // 길 +1
+//                         visited[row][col] = true;
+//                         path[row][col] = path[nr][nc] + 1;
+//                         queue.add(row + " " + col);
 
-                        System.out.println("row : " + row + " col : " + col + " / " + space[row][col]);
+//                         System.out.println("row : " + row + " col : " + col + " / " + space[row][col]);
 
-                        if(space[row][col] != 0 && space[row][col] < shark) {
-                            // 같은 경우에는 먹음
-                            space[row][col] = 0;
-                            return row + " " + col + " " + path[row][col];    
-                        }
-                    }
+//                         if(space[row][col] != 0 && space[row][col] < shark) {
+//                             // 자기보다 작은 경우에는 먹음
+//                             shortDist = path[row][col];
 
-                }
-            }
+                            
+//                             System.out.println("result : " + row + " " + col);
+//                             return row + " " + col + " " + path[row][col];    
+//                         }
+//                     }
 
-        }
+//                 }
+//             }
 
-        return str + " " + stc;
-    }
-}
+//         }
+
+//         return str + " " + stc;
+//     }
+// }
