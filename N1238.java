@@ -36,7 +36,6 @@ N명의 학생들 중 오고 가는데 가장 많은 시간을 소비하는 학�
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 import java.io.IOException; 
@@ -58,6 +57,7 @@ public class N1238 {
     }
 
     static int N;
+    static int M;
     static int X;
 
     static ArrayList<ArrayList<Node>> street = new ArrayList<>();
@@ -69,7 +69,7 @@ public class N1238 {
         // 학생 수와 단방향 도로의 수, 마을의 위치
         StringTokenizer input = new StringTokenizer(read.readLine());
         N = Integer.parseInt(input.nextToken());
-        int M = Integer.parseInt(input.nextToken());
+        M = Integer.parseInt(input.nextToken());
 
         X = Integer.parseInt(input.nextToken());
 
@@ -84,19 +84,24 @@ public class N1238 {
 
             int start = Integer.parseInt(dist.nextToken());
             int end = Integer.parseInt(dist.nextToken());
-            int cost = Integer.parseInt(dist.nextToken());
+            int weight = Integer.parseInt(dist.nextToken());
 
-            street.get(start).add(new Node(end, cost));
-            reverse.get(end).add(new Node(start, cost));
+            street.get(start).add(new Node(end, weight));
+            reverse.get(end).add(new Node(start, weight));
         }
 
 
         int[] fromX = dijkstra(street);
-
-        for(int i = 0; i < fromX.length; i++) {
-            System.out.println(fromX[i]);
-        }
         int[] toX = dijkstra(reverse);
+
+        int result = 0;
+        for(int i = 1; i <= N; i++) {
+            if(fromX[i] != Integer.MAX_VALUE && toX[i] != Integer.MAX_VALUE) {
+                result = Math.max(result, fromX[i] + toX[i]);
+            }
+        }
+
+        System.out.println(result);
     }
 
     public static int[] dijkstra(ArrayList<ArrayList<Node>> list) {
@@ -114,16 +119,19 @@ public class N1238 {
         while(!queue.isEmpty()) {
             Node node = queue.poll();
 
+            // System.out.println(node.next + " " + node.dist);
+
             if(visited[node.next]) continue;
             visited[node.next] = true;
 
-            for(Node next : list.get(node.next)) {                    
-                cost[next.next] = Math.min(cost[next.next], cost[next.next] + next.dist);
-                queue.add(next);
+            for(Node next : list.get(node.next)) {          
+                if(cost[next.next] > cost[node.next] + next.dist) {
+                    cost[next.next] = cost[node.next] + next.dist;
+                    queue.add(new Node(next.next, cost[next.next]));
+                }      
             }
         }
 
         return cost;
     }
-
 }
