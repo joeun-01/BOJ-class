@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class N2920 {
+    @SuppressWarnings("unchecked")
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
 

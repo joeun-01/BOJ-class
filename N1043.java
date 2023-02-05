@@ -55,6 +55,7 @@ public class N1043 {
     static ArrayList<Integer>party[];
     static ArrayList<Integer>people[];
 
+    @SuppressWarnings("unchecked")
     public static void main(String[] args) throws  IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         
