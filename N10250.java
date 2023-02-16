@@ -36,6 +36,7 @@ package BOJ;
  * 402
  * 1203
  */
+// 양심 없는 커밋하기
 
 import java.util.Scanner;
 
