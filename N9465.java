@@ -65,24 +65,24 @@ public class N9465 {
             dp[0][0] = sticker[0][0];
             dp[1][0] = sticker[1][0];
 
-            for(int j = 1; j < col; j++) {
-                for(int k = 0; k < 2; k++) {
-                    if(k == 0) {
-                        dp[k][j] = Math.max(dp[k][j - 1], Math.max(dp[k + 1][j - 1] + sticker[k][j], dp[k + 1][j]));
+            for(int k = 1; k < col; k++) {
+                for(int j = 0; j < 2; j++) {
+                    if(j == 0) {
+                        dp[j][k] = Math.max(dp[0][k - 1], dp[1][k - 1] + sticker[j][k]); 
                     } else {
-                        dp[k][j] = Math.max(dp[k][j - 1], Math.max(dp[k - 1][j - 1] + sticker[k][j], dp[k - 1][j]));
+                        dp[j][k] = Math.max(dp[0][k - 1] + sticker[j][k], dp[1][k - 1]); 
                     }
                 }
             }
 
-            for(int j = 0; j < 2; j++) {
-                for(int k = 0; k < col; k++) {
-                    System.out.print(dp[j][k] + " ");
-                }
-                System.out.println();
-            }
+            // for(int j = 0; j < 2; j++) {
+            //     for(int k = 0; k < col; k++) {
+            //         System.out.print(dp[j][k] + " ");
+            //     }
+            //     System.out.println();
+            // }
 
-            build.append(Math.min(dp[0][col - 1], dp[1][col - 1]) + "\n");
+            build.append(Math.max(dp[0][col - 1], dp[1][col - 1]) + "\n");
         }
 
         System.out.println(build);
