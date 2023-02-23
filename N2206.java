@@ -61,51 +61,44 @@ public class N2206 {
             }
         }
 
-        int min = BFS();
-        if(min == 0) min = Integer.MAX_VALUE;
-
-        // System.out.println(min);
-
-        for(int i = 0; i < N; i++) {
-            for(int j = 0; j < M; j++) {
-                if(graph[i][j] == 1) { 
-                    if(!check(j, i)) continue;
-
-                    graph[i][j] = 0;
-
-                    int dist = BFS();
-                    if(dist != 0) min = Math.min(min, BFS());
-                    // System.out.println(min);
-
-                    graph[i][j] = 1;
-                }
-            }
+        if(N == 1 && M == 1){
+            System.out.println(1);
+            System.exit(0);
         }
 
-        if(min == Integer.MAX_VALUE) System.out.println(-1);
-        else System.out.println(min);
+        int result = BFS();
+
+        if(result == -1) System.out.println(-1);
+        else System.out.println(result);
     }
 
     static class Coordinate {
         int x;
         int y;
+        int crash;
 
-        public Coordinate(int x, int y) {
+        public Coordinate(int x, int y, int crash) {
             this.x = x;
             this.y = y;
+            this.crash = crash;
         }
     }
 
     static int[] dx = {0, 0, -1, 1};
     static int[] dy = {-1, 1, 0, 0};
 
+    /*
+        visited를 3중 배열로 만들어서,
+        벽을 부수고 탐색하는 경우와 부수지 않고 탐색하는 경우를 따로 처리
+        visited[n][m][0]은 한 번도 부수지 않은 경우, visited[n][m][1]은 한 번 부순 경우
+     */
     public static int BFS() {
         Queue<Coordinate> queue = new LinkedList<>();
-        boolean[][] visited = new boolean[N][M]; 
+        boolean[][][] visited = new boolean[N][M][2]; 
         int[][] dist = new int[N][M];
 
-        queue.add(new Coordinate(0, 0));
-        visited[0][0] = true;
+        queue.add(new Coordinate(0, 0, 0));
+        visited[0][0][0] = true;
         dist[0][0] = 1;
 
         while(!queue.isEmpty()) {
@@ -115,37 +108,32 @@ public class N2206 {
                 int x = now.x + dx[i];
                 int y = now.y + dy[i];               
 
-                if(x >= 0 && x < M && y >= 0 && y < N) {                
+                if(x >= 0 && x < M && y >= 0 && y < N) {   
+                    if(graph[y][x] == 0) {             
+                        // 다음 칸이 벽이 아닐 때
+                        if(!visited[y][x][now.crash]) {
+                            visited[y][x][now.crash] = true;
+                            dist[y][x] = dist[now.y][now.x] + 1;
 
-                    if(!visited[y][x] && graph[y][x] == 0) {
-                        queue.add(new Coordinate(x, y));
-                        visited[y][x] = true;
-                        dist[y][x] = dist[now.y][now.x] + 1;
-
-                        if((y == N - 1) && (x == M - 1)) {
-                            return dist[y][x];
+                            queue.add(new Coordinate(x, y, now.crash));
                         }
+                    } else {
+                        // 다음 칸이 벽일 때
+                        if(now.crash == 0 && !visited[y][x][1]) {
+                            visited[y][x][1] = true;
+                            dist[y][x] = dist[now.y][now.x] + 1;
+
+                            queue.add(new Coordinate(x, y, 1));
+                        }
+                    }    
+
+                    if((y == N - 1) && (x == M - 1)) {
+                        return dist[y][x];
                     }
                 }
             }
         }
 
-        return dist[N - 1][M - 1];
-    }
-    
-    public static boolean check(int x, int y) {
-        int cnt = 0;
-
-        for(int i = 0; i < 4; i++) {
-            int nx = x + dx[i];
-            int ny = y + dy[i];               
-
-            if(nx >= 0 && nx < M && ny >= 0 && ny < N) {                
-                if(graph[ny][nx] == 0) cnt++;
-            }
-        }
-
-        if(cnt < 2) return false;
-        else return true; 
+        return -1;
     }
 }
