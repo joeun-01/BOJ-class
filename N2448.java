@@ -37,34 +37,57 @@ package BOJ;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.io.IOException;
 
 public class N2448 {
+    static char[][] star;
+    static int N;
+
     public static void main(String[] args) throws IOException {
         BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder build = new StringBuilder();
 
-        int N = Integer.parseInt(read.readLine());
+        N = Integer.parseInt(read.readLine());
 
         int total = 2 * N - 1;
         int middle = N;
 
         // System.out.println(total + " " + middle);
 
-        for(int i = 1; i <= N; i++) {
-            for(int j = 1; j <= total; j++) {
-                // 경계선 구분
-                if(j >= middle - i + 1 && j <= middle + i - 1) {
-                    if(i % 3 == 0) {
-                        if(i != 3 && j % 6 == 0) build.append(" ");
-                        else build.append("*");
-                    } else build.append("*");
-                } else build.append(" ");
-            }
+        star = new char[N] [total];
+        for (char[] i : star) Arrays.fill(i, ' ');
 
+        print(0, middle - 1, N);
+
+        for(int i = 0; i < N; i++) {
+            for(int j = 0; j < total; j++) {
+                build.append(star[i][j]);
+            }
             build.append("\n");
         }
 
         System.out.println(build);
+    }
+
+    public static void print(int row, int middle, int N) {
+        if(N == 3) {        
+            // 1번째 줄
+            star[row][middle] = '*';
+            // 2번째 줄
+            star[row + 1][middle - 1] = '*';
+            star[row + 1][middle + 1] = '*';
+            // 3번째 줄
+            for(int i = middle - 2; i <= middle + 2; i++) {
+                star[row + 2][i] = '*';
+            }
+
+            return;
+        }
+
+        N = N / 2;
+        print(row, middle, N);
+        print(row + N, middle - N, N);
+        print(row + N, middle + N, N);
     }
 }
