@@ -56,10 +56,10 @@ public class N2638 {
             }
         }
 
-
+        // 커밋 확인
     }
 
     public static void BFS() {
-        
+        int a = 0;
     }
 }
