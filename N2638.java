@@ -38,14 +38,33 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 import java.io.IOException;
 
+import java.util.Queue;
+import java.util.LinkedList;
+
 public class N2638 {
+    static int N;
+    static int M;
     static int[][] cheese;
+
+    static int[] dx = {0, 0, -1, 1}; 
+    static int[] dy = {-1, -1, 0, 0};
+
+    static class Node {
+        int y;
+        int x;
+
+        public Node(int y, int x) {
+            this.y = y;
+            this.x = x;
+        }
+    }
+
     public static void main(String[] args) throws IOException {
         BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
 
         StringTokenizer stoi = new StringTokenizer(read.readLine());
-        int N = Integer.parseInt(stoi.nextToken());
-        int M = Integer.parseInt(stoi.nextToken());
+        N = Integer.parseInt(stoi.nextToken());
+        M = Integer.parseInt(stoi.nextToken());
 
         cheese = new int[N][M];
 
@@ -56,10 +75,52 @@ public class N2638 {
             }
         }
 
-        // 커밋 확인
+        int hour = 0;
+        for(int i = 0; i < N; i++) {
+            for(int j = 0; j < M; j++) {
+                if(cheese[i][j] == 1) {
+                    BFS(i, j);
+                }
+            }
+        }
+        System.out.println();
+
+        for(int i = 0; i < N; i++) {
+            for(int j = 0; j < M; j++) {
+                System.out.print(cheese[i][j] + " ");
+            }
+            System.out.println();
+        }
+
     }
 
-    public static void BFS() {
-        int a = 0;
+    public static void BFS(int r, int c) {
+        Queue<Node> queue = new LinkedList<>();
+        boolean[][] visited = new boolean[N][M];
+
+        queue.add(new Node(r, c));
+        visited[r][c] = true;
+
+        while(queue.isEmpty()) {
+            Node cur = queue.poll();
+            int cnt = 0;  // 외부 접촉면 개수 = 4 - cnt
+
+            for(int i = 0; i < 4; i++) {
+                int nx = cur.x + dx[i];
+                int ny = cur.y + dy[i];
+
+                if(nx < 0 || nx >= M || ny < 0 || ny >= N) continue;
+
+                if(!visited[ny][nx] && cheese[ny][nx] == 1) {
+                    queue.add(new Node(ny, nx));
+                    visited[ny][nx] = true;
+                    cnt++;
+                }
+            }
+
+            if(4 - cnt >= 2) {
+                cheese[cur.y][cur.x] = 0;
+            }
+        }
     }
 }
