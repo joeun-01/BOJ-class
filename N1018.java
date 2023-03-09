@@ -1,5 +1,5 @@
 package BOJ;
-
+// 아아
 import java.util.Scanner;
 
 public class N1018 {
