@@ -47,12 +47,19 @@ public class N1333 {
         int L = Integer.parseInt(stoi.nextToken());  // 노래 길이
         int D = Integer.parseInt(stoi.nextToken());  // 전화벨 주기
 
+        int time = D;
         while(true) {
-            int time = 0;
+            if(time > N * (L + 5) - 1) {
+                System.out.println(time);
+                break;
+            }
 
-            // L이 
-            // N
+            if(time % (L + 5) >= L && time % (L + 5) <= L + 4) {
+                System.out.println(time);
+                break;
+            }
+
+            time += D;
         }
-
     }
 }
