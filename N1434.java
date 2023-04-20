@@ -52,7 +52,7 @@ public class N1434 {
         int waste = 0, fill = 0;
         int current = 0;
 
-        int[] box_wei = new int[N];
+        int[] box_wei = new int[N + 1];
         for(int i = 0; i < N; i++) {
             box_wei[i] = Integer.parseInt(box.nextToken());
         }
@@ -63,17 +63,18 @@ public class N1434 {
             if(fill + book_wei <= box_wei[current]) {
                 fill += book_wei;
             } else {
+                waste += (box_wei[current] - fill);
                 fill = 0;
-                waste = (box_wei[current] - fill);
 
                 current++;
 
                 while(true) {
                     if(fill + book_wei <= box_wei[current]) {
                         fill += book_wei;
+                        break;
                     } else {
+                        waste += (box_wei[current] - fill);
                         fill = 0;
-                        waste = (box_wei[current] - fill);
 
                         current++;
                     }
@@ -81,6 +82,11 @@ public class N1434 {
             }
         }
 
-        System.out.println(waste + box_wei[current] - fill);
+        waste += box_wei[current] - fill;
+        for(int i = current + 1; i < N; i++) {
+            waste += box_wei[i];
+        }
+
+        System.out.println(waste);
     }
 }
