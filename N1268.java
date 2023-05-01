@@ -59,7 +59,6 @@ public class N1268 {
 
         boolean[][] student = new boolean[N][N];
         for(int i = 0; i < N; i++) {
-            int max = 0;
             for(int j = 0; j < 5; j++) {
                 int cur = room[i][j];
 
