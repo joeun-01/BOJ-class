@@ -43,13 +43,6 @@ public class N1712 {
             System.exit(0);
         }
 
-        int cnt = 1;
-        while(true) {
-            if(A + B * cnt < C * cnt) break;
-
-            cnt++;
-        }
-
-        System.out.println(cnt);
+        System.out.println((A / (C - B)) + 1);
     }
 }
