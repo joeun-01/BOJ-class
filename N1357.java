@@ -31,7 +31,33 @@ public class N1357 {
         int X = Integer.parseInt(stoi.nextToken());
         int Y = Integer.parseInt(stoi.nextToken());
 
-        
+        int revX = 0;
+        while(true) {
+            revX = revX * 10 + X % 10;
 
+            X /= 10;
+
+            if(X < 1) break;
+        }
+
+        int revY = 0;
+        while(true) {
+            revY = revY * 10 + Y % 10;
+
+            Y /= 10;
+
+            if(Y < 1) break;
+        }
+
+        int V = revX + revY, revV = 0;
+        while(true) {
+            revV = revV * 10 + V % 10;
+
+            V /= 10;
+
+            if(V < 1) break;
+        }
+
+        System.out.println(revV);
     }
 }
