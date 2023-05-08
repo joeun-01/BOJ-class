@@ -40,14 +40,12 @@ public class N1551 {
         int[] num = new int[N];
         for(int i = 0; i < N; i++) {
             num[i] = Integer.parseInt(array.nextToken());
-            System.out.println(num[i]);
 
         }
 
         for(int i = 0; i < K; i++) {
             for(int j = 0; j < N - 1; j++) {
                 num[j] = num[j + 1] - num[j];
-                System.out.println(num[j]);
             }
 
             N--;
