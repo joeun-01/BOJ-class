@@ -24,7 +24,25 @@ public class N1526 {
     public static void main(String[] args) throws IOException {
         BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
 
-        int N = Integer.parseInt(read.readLine());
-        
+        long N = Integer.parseInt(read.readLine());
+
+        long answer = N;
+        while(true) {
+            long cur = answer;
+            boolean isPossible = true;
+            while(cur > 0) {
+                if(!(cur % 10 == 7 || cur % 10 == 4)) {
+                    isPossible = false;
+                    break;
+                } 
+                
+                cur /= 10;
+            }
+
+            if(isPossible) break;
+            else answer--;
+        }
+
+        System.out.println(answer);
     }
 }
