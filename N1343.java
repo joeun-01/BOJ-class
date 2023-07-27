@@ -18,14 +18,12 @@ AAAABB
  */
 
 import java.io.*;
-import java.util.StringTokenizer;
 
 public class N1343 {
     public static void main(String[] args) throws IOException {
         BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
 
         String board = read.readLine();
-        StringTokenizer stoi = new StringTokenizer(board, ".");
 
         String result = "";
         int Xcnt = 0;
