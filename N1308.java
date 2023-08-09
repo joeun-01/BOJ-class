@@ -25,87 +25,84 @@ import java.io.*;
 import java.util.StringTokenizer;
 
 public class N1308 {
-    public static void main(String[] args) throws IOException {
-        BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		StringTokenizer st;
+		st = new StringTokenizer(br.readLine());
+		int year = Integer.parseInt(st.nextToken());
+		int month = Integer.parseInt(st.nextToken());
+		int day = Integer.parseInt(st.nextToken());
 
-        StringTokenizer now = new StringTokenizer(read.readLine());
-        int nYear = Integer.parseInt(now.nextToken());
-        int nMonth = Integer.parseInt(now.nextToken());
-        int nDay = Integer.parseInt(now.nextToken());
+		st = new StringTokenizer(br.readLine());
+		int f_year = Integer.parseInt(st.nextToken());
+		int f_month = Integer.parseInt(st.nextToken());
+		int f_day = Integer.parseInt(st.nextToken());
 
-        StringTokenizer camp = new StringTokenizer(read.readLine());
-        int cYear = Integer.parseInt(camp.nextToken());
-        int cMonth = Integer.parseInt(camp.nextToken());
-        int cDay = Integer.parseInt(camp.nextToken());
+		int dday = 0;
+		// gg 체크
+		if (is_gg(year, month, day, f_year, f_month, f_day)) {
+			bw.write("gg");
+		} else {
+			dday= check_days(f_year,f_month-1,f_day) - check_days(year,month-1,day);
+			bw.write("D-" + dday);
+		}
+		bw.flush();
+		bw.close();
+		br.close();
+	}
+	public static int check_days(int year,int month,int day) {
+		int[] m_day = {31,28,31,30,31,30,31,31,30,31,30,31};
+		int days = 0;
+		
+		for(int i=0;i<year; i++) {
+			days+=365;
+			if(check_leap(i)==true) {
+				days+=1;
+			}
+		}
+		
+		for(int i=0;i<month; i++) {
+			days+=m_day[i];
+			if(i==1&&check_leap(year)==true) {
+				days+=1;
+			}
+		}
+		
+		days+=day;
+		
+		return days;
+	}
+	// gg체크
+	public static boolean is_gg(int year, int month, int day, int f_year, int f_month, int f_day) {
 
-        // 1000년 이상 차이나는 경우
-        if(cYear - nYear > 1000) {
-            System.out.println("gg");
-            System.exit(0);
-        } else if(cYear - nYear == 1000) {
-            if(cMonth - nMonth > 0) {
-                System.out.println("gg");
-                System.exit(0);
-            } else if(cMonth - nMonth == 0 && cDay - nDay >= 0) {
-                System.out.println("gg");
-                System.exit(0);
-            }
-        }
+		if (f_year - year > 1000) {
+			return true;
+		} else if (f_year - year == 1000) {
+			if (f_month > month) {
+				return true;
+			} else if (f_month == month) {
+				if (f_day >= day) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
-        int day = 0;
 
-        // 년도 계산
-        while(cYear - nYear > 1) {
-            if(nYear % 400 == 0) day += 366;
-            else if(nYear % 100 == 0) day += 365;
-            else if(nYear % 4 == 0) day += 366;
-            else day += 365;
-
-            nYear++;
-        }
-
-        while(true) {
-            // 1, 3, 5, 7, 8, 10, 12
-            // 2
-            // 4, 6, 9, 11
-            if((cYear == nYear && cMonth - nMonth <= 1) || (cYear - nYear == 1 && cMonth == 1 && nMonth == 12)) break;  // 날을 계산하기 위해 남겨둠
-            
-            if(nMonth == 2) {
-                if(nYear % 400 == 0) day += 29;
-                else if(nYear % 100 == 0) day += 28;
-                else if(nYear % 4 == 0) day += 29;
-                else day += 28;
-            } else if(nMonth == 4 || nMonth == 6 || nMonth == 9 || nMonth == 11) {
-                day += 30;
-            } else {
-                day += 31;
-            }
-
-            nMonth++;
-
-            if(nMonth == 13) {
-                nMonth = 1;
-                nYear++;
-            }
-        }
-
-        if((cMonth - nMonth == 1) || (cMonth == 1 && nMonth == 12)) {
-            if(nMonth == 2) {
-                if(nYear % 400 == 0) day += (29 - nDay);
-                else if(nYear % 100 == 0) day += (28 - nDay);
-                else if(nYear % 4 == 0) day += (29 - nDay);
-                else day += (28 - nDay);
-            } else if(nMonth == 4 || nMonth == 6 || nMonth == 9 || nMonth == 11) {
-                day += (30 - nDay);
-            } else {
-                day += (31 - nDay);
-            }
-
-            day += cDay;
-        } else if(cMonth - nMonth == 0) {
-            day += (cDay - nDay);
-        }
-
-        System.out.println("D-" + day);
-    }
+	// 윤년 체크
+	public static boolean check_leap(int year) {
+		if (year % 4 == 0) {
+            if (year % 100 == 0) {
+				if (year % 400 == 0) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
+	}
 }
