@@ -43,11 +43,14 @@ public class N3060 {
         StringBuilder build = new StringBuilder();
 
         int T = Integer.parseInt(read.readLine());
+        
+        int[] pig = new int[6];
+        int[] newDay = new int[6];
+
         for(int i = 0; i < T; i++) {
             long feed = Integer.parseInt(read.readLine());
 
             StringTokenizer first = new StringTokenizer(read.readLine());
-            int[] pig = new int[6];
             int start = 0;
             for(int j = 0; j < 6; j++) {
                 pig[j] = Integer.parseInt(first.nextToken());
@@ -55,13 +58,12 @@ public class N3060 {
             }
 
             if(start > feed) {
-                build.append(1);
+                build.append(1 + "\n");
                 continue;
             }
 
             int day = 2;
             while(true) {
-                int[] newDay = new int[6];
                 long total = 0;
                 for(int j = 0; j < 6; j++) {
                     int left = (j == 0) ? 5 : (j - 1);
