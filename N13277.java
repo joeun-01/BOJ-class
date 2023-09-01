@@ -1,11 +1,5 @@
 package BOJ;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.math.BigInteger;
-import java.util.StringTokenizer;
-
 /*
 두 정수 A와 B가 주어졌을 때, 두 수의 곱을 출력하는 프로그램을 작성하시오.
 
@@ -20,7 +14,11 @@ import java.util.StringTokenizer;
 2
  */
 
-
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.math.BigInteger;
+import java.util.StringTokenizer;
 
 public class N13277 {
     public static void main(String[] args) throws IOException {
