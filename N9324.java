@@ -40,22 +40,28 @@ public class N9324 {
         for(int i = 0; i < N; i++) {
             String str = read.readLine();
 
-            for(int j = 0; j < str.length(); j++) {
-                map.put(str.charAt(j), map.getOrDefault(str.charAt(j), 0) + 1);
-            }
-
             boolean result = true;
-            for(char key : map.keySet()) {
-                int total = map.get(key);
+            for(int j = 0; j < str.length(); j++) {
+                char letter = str.charAt(j);
+                map.put(letter, map.getOrDefault(letter, 0) + 1);
 
-                // System.out.println(key + " " + total);
+                // System.out.println(letter + ": " + map.get(letter));
 
-                if(total % 3 == 0) {
-                    result = false;
-                    break;
+                if(map.get(letter) != 0 && map.get(letter) % 3 == 0) {
+                    if(j == str.length() - 1) {
+                        result = false;
+                        break;
+                    }
+
+                    if(letter == str.charAt(j + 1)) {
+                        map.replace(letter, -1);
+                    } else {
+                        result = false;
+                        break;
+                    }
                 }
             }
-
+                
             if(result) {
                 build.append("OK\n");
             } else {
@@ -63,7 +69,7 @@ public class N9324 {
             }
 
             map.clear();
-        } 
+        }
 
         System.out.println(build);
     }
