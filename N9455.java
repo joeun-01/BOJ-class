@@ -51,6 +51,7 @@ import java.util.StringTokenizer;
 public class N9455 {
     public static void main(String[] args) throws IOException {
         BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder build = new StringBuilder();
 
         int T = Integer.parseInt(read.readLine());
         for(int i = 0; i < T; i++) {
@@ -59,6 +60,7 @@ public class N9455 {
             int N = Integer.parseInt(stoi.nextToken());
 
             int[][] table = new int[M][N];
+            int[] rowCnt = new int[N];
             for(int j = 0; j < M; j++) {
                 StringTokenizer row = new StringTokenizer(read.readLine());
                 for(int k = 0; k < N; k++) {
@@ -69,10 +71,16 @@ public class N9455 {
             int move = 0;
             for(int j = M - 1; j >= 0; j--) {
                 for(int k = 0; k < N; k++) {
-                    
+                    if(table[j][k] == 1) {
+                        rowCnt[k]++;
+                        move += Math.abs((M - j) - rowCnt[k]);
+                    }
                 }
             }
+
+            build.append(move + "\n");
         }
 
+        System.out.println(build);
     }
 }
