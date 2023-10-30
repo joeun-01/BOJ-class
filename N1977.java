@@ -26,20 +26,21 @@ public class N1977 {
         int M = Integer.parseInt(read.readLine());
         int N = Integer.parseInt(read.readLine());
 
-        int start = (int) Math.round(Math.pow(M, 0.5));
-        int end = (int) Math.pow(N, 0.5);
+        int start = (int) Math.ceil(Math.sqrt(M));
+        int end = (int) Math.floor(Math.sqrt(N));
 
-        if(start > end || start * start < M) {
-            System.out.println(-1);
-            System.exit(0);
-        }
+        // System.out.println(start + " " + end);
         
         long sum = 0;
         for(int i = start; i <= end; i++) {
             sum += i * i;
         }   
 
-        System.out.println(sum);       
-        System.out.println(start * start);
+        if(sum > 0) {
+            System.out.println(sum);       
+            System.out.println(start * start);
+        } else{
+            System.out.println(-1);
+        }
     }
 }
