@@ -47,7 +47,6 @@ public class N1965 {
                     DP[i] = Math.max(DP[i], DP[j] + 1); 
                 }
 
-                
             } 
             max = Math.max(DP[i], max);
         }
