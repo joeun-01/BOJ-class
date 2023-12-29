@@ -42,16 +42,39 @@ public class N13340 {
             }
         }
 
-        int[][] DP = new int[N][M];
+        int[][] DP = area;
         for(int i = 0; i < N; i++) {
             for(int j = 0; j < M; j++) {
+
+                if(i == 0 && j == 0) {
+                    DP[i][j] = area[i][j];
+                    continue;
+                }
+                
                 int left = j - 1;
                 int up = i - 1;
-                if(up < 0 || up >= N || left < 0 || left >= M) continue;
-                
-                DP[i][j] = Math.max(DP[up][j], DP[i][left]);
-                
+
+                int upNum = -1;
+                if(up >= 0 && up < N) {
+                    upNum = DP[up][j] + area[i][j];
+                }
+
+                int leftNum = -1;
+                if(left >= 0 && left < M) {
+                    leftNum = DP[i][left] + area[i][j];
+                }
+
+                DP[i][j] = Math.max(upNum, leftNum);
+
+                for(int row = 0; row < N; row++) {
+                    for(int col = 0; col < M; col++) {
+                        System.out.print(DP[row][col] + " ");
+                    }
+                    System.out.println();
+                }
             }
         }
+
+        System.out.println(DP[N - 1][M - 1]);
     }
 }
