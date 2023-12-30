@@ -66,12 +66,12 @@ public class N13340 {
 
                 DP[i][j] = Math.max(upNum, leftNum);
 
-                for(int row = 0; row < N; row++) {
-                    for(int col = 0; col < M; col++) {
-                        System.out.print(DP[row][col] + " ");
-                    }
-                    System.out.println();
-                }
+                // for(int row = 0; row < N; row++) {
+                //     for(int col = 0; col < M; col++) {
+                //         System.out.print(DP[row][col] + " ");
+                //     }
+                //     System.out.println();
+                // }
             }
         }
 
