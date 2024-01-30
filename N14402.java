@@ -55,8 +55,12 @@ public class N14402 {
             char record = stoi.nextToken().charAt(0);
 
             if(enter.get(name) == null) {
-                if(record == '+') enter.put(name, true);
-                else enter.put(name, false);
+                if(record == '+') {
+                    enter.put(name, true);
+                } else {
+                    enter.put(name, false);
+                    cnt++;
+                }
 
                 continue;
             }
