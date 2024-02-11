@@ -1,10 +1,5 @@
 package BOJ;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
-
 /*
 N장의 카드가 일렬로 놓여있다. 
 각 카드에는 알파벳이 하나씩 적혀있다. 
@@ -45,6 +40,11 @@ ASDFG
 AAABCBC
  */
 
+ import java.io.BufferedReader;
+ import java.io.IOException;
+ import java.io.InputStreamReader;
+ import java.util.StringTokenizer;
+ 
 public class N13417 {
     public static void main(String[] args) throws IOException {
         BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
