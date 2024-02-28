@@ -61,6 +61,8 @@ public class N1935 {
                     double num = second / first;
                     stack.push(num);
                 }
+
+                // System.out.println(stack);
             }
         }
 
