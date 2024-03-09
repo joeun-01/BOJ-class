@@ -1,10 +1,5 @@
 package BOJ;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.HashSet;
-
 /*
 최근에 진솔이는 로봇 공학을 하기 시작했다. 
 그래서 포커 카드가 완전한 세트인지 확인하는 로봇을 만들기로 결심했다.
@@ -39,6 +34,11 @@ P01K02H03H04
 
 12 12 11 13
  */
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.HashSet;
 
 public class N11507 {
     public static void main(String args[]) throws IOException {
