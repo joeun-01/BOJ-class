@@ -13,14 +13,17 @@ N을 20000303으로 나눈 나머지를 출력한다.
  */
 
 import java.io.*;
-import java.math.BigInteger;
 
 public class N14928 {
     public static void main(String[] args) throws IOException {
         BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
 
-        BigInteger num = new BigInteger(read.readLine());
-        BigInteger mod = new BigInteger("20000303");
-        System.out.println(num.mod(mod));
+        String str = read.readLine();
+        long temp = 0;
+        for(int i = 0; i < str.length(); i++) {
+            temp = (temp * 10 + (str.charAt(i) - '0')) % 20000303;
+        }
+
+        System.out.println(temp);
     }
 }
