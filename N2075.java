@@ -30,7 +30,8 @@ N=5일 때의 예를 보자.
  */
 
 import java.io.*;
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 public class N2075 {
@@ -38,19 +39,21 @@ public class N2075 {
         BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
 
         int N = Integer.parseInt(read.readLine());
-        int size = N * N;
 
-        long[] table = new long[size];
-        for(int i = 0; i < N; i++) {                
+        PriorityQueue<Long> queue = new PriorityQueue<>(Collections.reverseOrder());
+
+        for(int i = 0; i < N; i++) {
             StringTokenizer stoi = new StringTokenizer(read.readLine());
 
             for(int j = 0; j < N; j++) {
-                table[5 * i + j] = Long.parseLong(stoi.nextToken());
+                queue.add(Long.parseLong(stoi.nextToken()));
             }
         }
-        
-        Arrays.sort(table);
 
-        System.out.println(table[size - N]);
+        for(int i = 1; i < N; i++) {
+            queue.poll();
+        }
+
+        System.out.println(queue.poll());
     }
 }
