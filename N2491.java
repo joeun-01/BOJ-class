@@ -37,6 +37,7 @@ public class N2491 {
         int[] increaseDP = new int[N];        
         int[] decreaseDP = new int[N];
         increaseDP[0] = 1;
+        decreaseDP[0] = 1;
         
         int max = increaseDP[0];
         for(int i = 1; i < N; i++) {
