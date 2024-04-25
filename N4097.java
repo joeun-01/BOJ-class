@@ -58,11 +58,15 @@ public class N4097 {
 
             int[] dp = new int[N + 1];
             dp[1] = profits[1];
+    
+            build.append("\n");
 
             int max = -10001;
             for(int i = 2; i <= N; i++) {
                 dp[i] = Math.max(profits[i], dp[i - 1] + profits[i]);
+
                 max = Math.max(max, dp[i]);
+                build.append(dp[i]).append(" ");
             }
     
             build.append(max).append("\n");
