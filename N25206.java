@@ -73,7 +73,7 @@ public class N25206 {
         for(int i = 0; i < 20; i++) {
             StringTokenizer stoi = new StringTokenizer(read.readLine());
 
-            String subject = stoi.nextToken();
+            stoi.nextToken();
             float score = Float.parseFloat(stoi.nextToken());
             String grade = stoi.nextToken();
 
