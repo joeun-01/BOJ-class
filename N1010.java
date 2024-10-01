@@ -36,6 +36,7 @@ public class N1010 {
 
         int T = Integer.parseInt(read.readLine());
         
+        // 반복
         while(T > 0) {
             StringTokenizer stoi = new StringTokenizer(read.readLine());
             int N = Integer.parseInt(stoi.nextToken());
